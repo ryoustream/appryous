@@ -119,7 +119,7 @@
 
     <!-- About -->
     <string name="about_title">Tentang</string>
-    <string name="about_version">Versi %s (%s)</string>
+    <string name="about_version" formatted="false">Versi %s (%s)</string>
     <string name="about_built_with">Dibangun dengan</string>
     <string name="about_data_from">Data dari</string>
 
@@ -132,7 +132,7 @@
     <string name="common_error">Terjadi kesalahan</string>
     <string name="common_no_data">Tidak ada data</string>
     <string name="common_ep">Ep %d</string>
-    <string name="common_ep_title">Ep %d — %s</string>
+    <string name="common_ep_title" formatted="false">Ep %d — %s</string>
 
     <!-- Genres -->
     <string name="genre_action">Aksi</string>

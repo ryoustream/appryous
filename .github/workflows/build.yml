@@ -24,7 +24,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: gradle
+          # cache dihandle manual di bawah agar bisa exclude build-cache
 
       # ── 3. Download libmpv.so dari mpv-android release ───────────────────────
       #
@@ -114,12 +114,14 @@ jobs:
           
           echo "libmpv.so berhasil di-extract!"
 
-      # ── 4. Gradle cache ──────────────────────────────────────────────────────
+      # ── 4. Gradle cache (dependency only, BUKAN build-cache) ─────────────────
+      # build-cache SENGAJA tidak di-cache karena menyimpan AAPT2 task output
+      # yang bisa corrupt/stale saat layout/resource berubah
       - name: Cache Gradle dependencies
         uses: actions/cache@v4
         with:
           path: |
-            ~/.gradle/caches
+            ~/.gradle/caches/modules-2
             ~/.gradle/wrapper
           key: gradle-${{ hashFiles('**/*.gradle.kts', '**/libs.versions.toml') }}
           restore-keys: gradle-
@@ -130,14 +132,14 @@ jobs:
 
       # ── 6. Build debug APK ───────────────────────────────────────────────────
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace
+        run: ./gradlew assembleDebug --stacktrace --no-build-cache
         env:
           JAVA_HOME: ${{ env.JAVA_HOME }}
 
       # ── 7. Build release APK (hanya saat push ke main atau tag) ─────────────
       - name: Build Release APK
         if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
-        run: ./gradlew assembleRelease --stacktrace
+        run: ./gradlew assembleRelease --stacktrace --no-build-cache
 
       # ── 8. Sign release APK (hanya jika ada keystore secret) ────────────────
       #

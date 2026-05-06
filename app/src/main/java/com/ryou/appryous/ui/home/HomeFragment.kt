@@ -21,6 +21,7 @@ import com.ryou.appryous.ui.home.adapter.PosterCardAdapter
 import com.ryou.appryous.util.showIf
 import java.util.Timer
 import java.util.TimerTask
+import com.google.android.material.snackbar.Snackbar
 
 class HomeFragment : Fragment() {
 

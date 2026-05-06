@@ -18,6 +18,8 @@ import com.ryou.appryous.ui.detail.DetailActivity
 import com.ryou.appryous.ui.home.adapter.PosterCardAdapter
 import com.ryou.appryous.util.BaseViewModel
 import com.ryou.appryous.util.showIf
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 
 private val GENRES = listOf(
     "Action","Adventure","Comedy","Drama","Fantasy",

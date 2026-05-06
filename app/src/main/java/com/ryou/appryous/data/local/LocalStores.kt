@@ -13,7 +13,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 // BASE PREFS HELPER
 // ──────────────────────────────────────────────────────────────────────────────
 
-private abstract class BaseStore(context: Context, name: String) {
+internal abstract class BaseStore(context: Context, name: String) {
     protected val prefs: SharedPreferences =
         context.getSharedPreferences(name, Context.MODE_PRIVATE)
 

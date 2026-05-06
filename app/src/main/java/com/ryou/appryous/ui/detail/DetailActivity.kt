@@ -69,12 +69,12 @@ class DetailActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@DetailActivity)
             adapter = episodeAdapter
         }
-        binding.etSearchEp.addTextChangedListener(object : android.text.TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) {}
-            override fun onTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) {
-                vm.filterEpisodes(s?.toString() ?: "")
+        binding.etSearchEp.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?) = false
+            override fun onQueryTextChange(newText: String?): Boolean {
+                vm.filterEpisodes(newText ?: "")
+                return true
             }
-            override fun afterTextChanged(s: android.text.Editable?) {}
         })
     }
 

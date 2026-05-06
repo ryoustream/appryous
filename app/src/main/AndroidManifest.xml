@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- ── Permissions ──────────────────────────────────────────────── -->
+
+    <!-- Internet — untuk koneksi ke Cloudflare tunnel & Gist -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Keep WiFi active saat streaming (hindari buffer saat layar mati) -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+
+    <!-- WakeLock — jaga CPU tetap aktif saat audio/video play background -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- Foreground Service — Media playback notification -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+
+    <!-- PiP (Picture-in-Picture) — tidak butuh permission khusus,
+         tapi butuh configChanges di PlayerActivity -->
+
+    <!-- Post notifications untuk MediaSession (Android 13+) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- ── Feature Requirements ─────────────────────────────────────── -->
+
+    <!-- MKV playback butuh proper decoder — tidak wajibkan sebagai required -->
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+
+    <!-- ── Application ──────────────────────────────────────────────── -->
+
+    <application
+        android:name=".AppRyousApp"
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppRyous"
+        android:enableOnBackInvokedCallback="true"
+        tools:targetApi="33">
+
+        <!-- ── SplashActivity ─────────────────────────────────────── -->
+        <!--
+            Entry point app.
+            Resolve Gist URL → navigate ke MainActivity.
+            Pakai core-splashscreen API untuk animated icon.
+        -->
+        <activity
+            android:name=".ui.splash.SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppRyous.Splash"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- ── MainActivity ──────────────────────────────────────── -->
+        <!--
+            Host untuk Navigation Component.
+            Berisi Bottom Navigation: Home, Search, Archive, Category, Settings.
+        -->
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait" />
+
+        <!-- ── DetailActivity ─────────────────────────────────────── -->
+        <!--
+            Halaman detail anime: hero, poster, info, episode list.
+            Menerima Intent extra: EXTRA_ANIME_ID (String), EXTRA_ANIME_TITLE (String)
+        -->
+        <activity
+            android:name=".ui.detail.DetailActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
+        <!-- ── PlayerActivity ─────────────────────────────────────── -->
+        <!--
+            Video player dengan ExoPlayer / Media3.
+            - configChanges: handle orientasi, keyboard, density sendiri
+              agar ExoPlayer tidak di-recreate saat rotate.
+            - supportsPictureInPicture: PiP mode support.
+            - launchMode: singleTop agar tidak duplikat saat user tap play lagi.
+
+            Intent extras:
+              EXTRA_ANIME_ID    : String
+              EXTRA_ANIME_TITLE : String
+              EXTRA_EP_INDEX    : Int (index di playlist, bukan nomor episode)
+        -->
+        <activity
+            android:name=".ui.player.PlayerActivity"
+            android:exported="false"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:launchMode="singleTop"
+            android:screenOrientation="sensorLandscape"
+            android:supportsPictureInPicture="true"
+            android:resizeableActivity="true"
+            android:windowSoftInputMode="adjustNothing" />
+
+        <!-- ── MediaPlaybackService ───────────────────────────────── -->
+        <!--
+            Foreground service untuk MediaSession (background audio).
+            Diperlukan untuk media notification controls.
+        -->
+        <service
+            android:name=".ui.player.MediaPlaybackService"
+            android:exported="true"
+            android:foregroundServiceType="mediaPlayback"
+            android:permission="android.permission.BIND_JOB_SERVICE">
+            <intent-filter>
+                <action android:name="androidx.media3.session.MediaSessionService" />
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
+
+    </application>
+
+</manifest>

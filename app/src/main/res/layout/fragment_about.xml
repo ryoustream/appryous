@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/background" android:paddingTop="56dp">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:gravity="center_horizontal"
+        android:paddingHorizontal="24dp" android:paddingBottom="88dp">
+
+        <ImageView android:layout_width="72dp" android:layout_height="72dp"
+            android:src="@drawable/ic_splash_logo" android:layout_marginTop="24dp"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="ŘΨØŬ" android:textColor="@color/on_surface"
+            android:textSize="28sp" android:fontFamily="sans-serif-medium" android:layout_marginTop="8dp"/>
+        <TextView android:id="@+id/tv_version" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:textColor="@color/on_surface_variant"
+            android:textSize="13sp" android:layout_marginTop="4dp"/>
+
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/about_built_with" android:textColor="@color/accent_purple"
+            android:textSize="12sp" android:fontFamily="sans-serif-medium"
+            android:layout_marginTop="32dp" android:layout_marginBottom="8dp"/>
+
+        <com.google.android.material.button.MaterialButton android:id="@+id/btn_mpv"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp" android:text="mpv — Media Player"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/btn_libass"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp" android:text="libass — ASS Subtitle Renderer"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/btn_retrofit"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp" android:text="Retrofit — Networking"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/btn_moshi"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp" android:text="Moshi — JSON Parsing"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/btn_glide"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp" android:text="Glide — Image Loading"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/btn_media3"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp" android:text="Media3 — MediaSession"/>
+
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/about_data_from" android:textColor="@color/accent_purple"
+            android:textSize="12sp" android:fontFamily="sans-serif-medium"
+            android:layout_marginTop="24dp" android:layout_marginBottom="8dp"/>
+
+        <com.google.android.material.button.MaterialButton android:id="@+id/btn_mal"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp" android:text="MyAnimeList"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/btn_tmdb"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp" android:text="The Movie DB"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/btn_mdl"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp" android:text="MyDramaList"/>
+
+        <com.google.android.material.button.MaterialButton android:id="@+id/btn_github"
+            style="@style/Widget.Material3.Button.FilledButton"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="24dp" android:text="GitHub — ryoustream/appryous"/>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

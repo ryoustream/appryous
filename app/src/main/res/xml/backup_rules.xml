@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <include domain="sharedpref" path="rs_settings.xml" />
+    <include domain="sharedpref" path="rs_watch_history.xml" />
+    <exclude domain="sharedpref" path="rs_positions.xml" />
+    <exclude domain="sharedpref" path="rs_lib_cache.xml" />
+</full-backup-content>

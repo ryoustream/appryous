@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="spacing_xs">4dp</dimen>
+    <dimen name="spacing_sm">8dp</dimen>
+    <dimen name="spacing_md">16dp</dimen>
+    <dimen name="spacing_lg">24dp</dimen>
+    <dimen name="spacing_xl">32dp</dimen>
+    <dimen name="spacing_2xl">48dp</dimen>
+
+    <dimen name="card_radius">8dp</dimen>
+    <dimen name="card_radius_lg">12dp</dimen>
+    <dimen name="card_poster_width">120dp</dimen>
+    <dimen name="card_poster_height">170dp</dimen>
+    <dimen name="card_wide_height">100dp</dimen>
+    <dimen name="hero_height">240dp</dimen>
+
+    <dimen name="bottom_nav_height">64dp</dimen>
+    <dimen name="player_controls_height">56dp</dimen>
+    <dimen name="player_drawer_width">280dp</dimen>
+
+    <dimen name="text_xs">10sp</dimen>
+    <dimen name="text_sm">12sp</dimen>
+    <dimen name="text_md">14sp</dimen>
+    <dimen name="text_lg">16sp</dimen>
+    <dimen name="text_xl">18sp</dimen>
+    <dimen name="text_2xl">22sp</dimen>
+    <dimen name="text_3xl">28sp</dimen>
+</resources>

@@ -1,0 +1,213 @@
+name: Build AppRyous APK
+
+on:
+  push:
+    branches: [ main, develop ]
+    tags:     [ 'v*' ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:      # trigger manual dari GitHub UI
+
+jobs:
+  build:
+    name: Build & Sign APK
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── 1. Checkout ──────────────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── 2. JDK 17 ────────────────────────────────────────────────────────────
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      # ── 3. Download libmpv.so dari mpv-android release ───────────────────────
+      #
+      # Strategi:
+      #   Ambil release APK terbaru dari mpv-android/mpv-android.
+      #   APK adalah ZIP — extract lib/*/libmpv.so langsung dari dalamnya.
+      #   Tidak perlu NDK, tidak perlu compile. ~30MB download.
+      #
+      # Cache berdasarkan versi release agar tidak download ulang tiap build.
+      #
+      - name: Get latest mpv-android release info
+        id: mpv_release
+        run: |
+          # Fetch latest release tag dari GitHub API (tanpa auth → rate limit 60/jam, cukup untuk CI)
+          RELEASE_INFO=$(curl -s "https://api.github.com/repos/mpv-android/mpv-android/releases/latest")
+          TAG=$(echo "$RELEASE_INFO" | python3 -c "import sys,json; print(json.load(sys.stdin)['tag_name'])")
+          APK_URL=$(echo "$RELEASE_INFO" | python3 -c "
+          import sys, json
+          data = json.load(sys.stdin)
+          # Ambil APK universal atau arm64 — cari asset yang bukan source code
+          assets = data.get('assets', [])
+          for a in assets:
+              name = a['name'].lower()
+              # Prioritas: universal APK, lalu arm64, lalu apapun yang .apk
+              if 'universal' in name and name.endswith('.apk'):
+                  print(a['browser_download_url']); break
+              elif 'arm64' in name and name.endswith('.apk'):
+                  print(a['browser_download_url']); break
+          else:
+              # Fallback: apk pertama yang ditemukan
+              for a in assets:
+                  if a['name'].endswith('.apk'):
+                      print(a['browser_download_url']); break
+          ")
+          echo "tag=$TAG"     >> $GITHUB_OUTPUT
+          echo "apk_url=$APK_URL" >> $GITHUB_OUTPUT
+          echo "MPV release: $TAG"
+          echo "APK URL: $APK_URL"
+
+      - name: Cache libmpv.so
+        id: cache_mpv
+        uses: actions/cache@v4
+        with:
+          path: app/src/main/jniLibs
+          key: libmpv-${{ steps.mpv_release.outputs.tag }}
+
+      - name: Download and extract libmpv.so
+        if: steps.cache_mpv.outputs.cache-hit != 'true'
+        run: |
+          APK_URL="${{ steps.mpv_release.outputs.apk_url }}"
+          
+          if [ -z "$APK_URL" ]; then
+            echo "ERROR: Tidak bisa mendapatkan URL APK mpv-android!"
+            exit 1
+          fi
+          
+          echo "Downloading mpv-android APK dari: $APK_URL"
+          curl -L --retry 3 --retry-delay 5 -o /tmp/mpv-android.apk "$APK_URL"
+          
+          # APK adalah ZIP — extract langsung
+          mkdir -p /tmp/mpv-extract
+          unzip -q /tmp/mpv-android.apk "lib/*" -d /tmp/mpv-extract 2>/dev/null || true
+          
+          # Cek ABI yang tersedia
+          echo "ABI yang tersedia dalam APK:"
+          ls /tmp/mpv-extract/lib/ 2>/dev/null || echo "(tidak ada)"
+          
+          # Copy ke jniLibs — hanya libmpv.so yang dibutuhkan
+          for ABI in arm64-v8a armeabi-v7a x86_64; do
+            SRC="/tmp/mpv-extract/lib/$ABI/libmpv.so"
+            DST="app/src/main/jniLibs/$ABI/libmpv.so"
+            if [ -f "$SRC" ]; then
+              cp "$SRC" "$DST"
+              echo "✓ Copied libmpv.so untuk $ABI ($(du -h $DST | cut -f1))"
+            else
+              echo "⚠ libmpv.so tidak tersedia untuk $ABI — skip"
+            fi
+          done
+          
+          # Verifikasi minimal arm64-v8a ada (wajib)
+          if [ ! -f "app/src/main/jniLibs/arm64-v8a/libmpv.so" ]; then
+            echo "ERROR: arm64-v8a/libmpv.so tidak ditemukan!"
+            echo "Isi APK lib:"
+            find /tmp/mpv-extract/lib -name "*.so" | head -20
+            exit 1
+          fi
+          
+          echo "libmpv.so berhasil di-extract!"
+
+      # ── 4. Gradle cache ──────────────────────────────────────────────────────
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ hashFiles('**/*.gradle.kts', '**/libs.versions.toml') }}
+          restore-keys: gradle-
+
+      # ── 5. Beri permission ke gradlew ────────────────────────────────────────
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      # ── 6. Build debug APK ───────────────────────────────────────────────────
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug --stacktrace
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME }}
+
+      # ── 7. Build release APK (hanya saat push ke main atau tag) ─────────────
+      - name: Build Release APK
+        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
+        run: ./gradlew assembleRelease --stacktrace
+
+      # ── 8. Sign release APK (hanya jika ada keystore secret) ────────────────
+      #
+      # Setup di GitHub:
+      #   Settings → Secrets and variables → Actions → New repository secret
+      #   KEYSTORE_BASE64  : base64 dari file .jks kamu
+      #   KEYSTORE_PASSWORD: password keystore
+      #   KEY_ALIAS        : alias key
+      #   KEY_PASSWORD     : password key
+      #
+      # Generate debug keystore (untuk testing tanpa signing):
+      #   keytool -genkey -v -keystore debug.jks -alias debug -keyalg RSA -keysize 2048 -validity 36500
+      #   base64 -i debug.jks | pbcopy  (Mac) atau base64 debug.jks (Linux)
+      #
+      - name: Sign Release APK
+        if: |
+          (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')) &&
+          secrets.KEYSTORE_BASE64 != ''
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > /tmp/keystore.jks
+          
+          $ANDROID_HOME/build-tools/*/apksigner sign \
+            --ks /tmp/keystore.jks \
+            --ks-pass "pass:${{ secrets.KEYSTORE_PASSWORD }}" \
+            --ks-key-alias "${{ secrets.KEY_ALIAS }}" \
+            --key-pass "pass:${{ secrets.KEY_PASSWORD }}" \
+            --out app/build/outputs/apk/release/appryous-release-signed.apk \
+            app/build/outputs/apk/release/app-release-unsigned.apk
+          
+          echo "APK signed!"
+          rm -f /tmp/keystore.jks
+
+      # ── 9. Upload artifact (debug selalu, release saat push main/tag) ────────
+      - name: Upload Debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: AppRyous-debug-${{ github.sha }}
+          path: app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 14
+
+      - name: Upload Release APK
+        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
+        uses: actions/upload-artifact@v4
+        with:
+          name: AppRyous-release-${{ github.sha }}
+          path: app/build/outputs/apk/release/app-release*.apk
+          retention-days: 30
+
+      # ── 10. Buat GitHub Release saat push tag v* ─────────────────────────────
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            app/build/outputs/apk/release/appryous-release-signed.apk
+            app/build/outputs/apk/release/app-release-unsigned.apk
+            app/build/outputs/apk/debug/app-debug.apk
+          body: |
+            ## AppRyous ${{ github.ref_name }}
+            
+            ### Download
+            - **appryous-release-signed.apk** — Untuk install langsung di HP
+            - **app-debug.apk** — Debug build (untuk testing)
+            
+            ### mpv-android
+            Menggunakan libmpv.so dari mpv-android ${{ steps.mpv_release.outputs.tag }}
+            
+            ### Perubahan
+            Lihat [CHANGELOG](https://github.com/${{ github.repository }}/blob/main/changelogs.md)
+          draft: false
+          prerelease: ${{ contains(github.ref_name, '-beta') || contains(github.ref_name, '-alpha') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

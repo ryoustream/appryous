@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="56dp"
+    android:orientation="horizontal" android:gravity="center_vertical"
+    android:paddingHorizontal="16dp"
+    android:background="?attr/selectableItemBackground" android:clickable="true" android:focusable="true">
+    <TextView android:id="@+id/tv_ep_num"
+        android:layout_width="40dp" android:layout_height="wrap_content"
+        android:textColor="@color/accent_purple" android:textSize="12sp"
+        android:fontFamily="sans-serif-medium"/>
+    <TextView android:id="@+id/tv_ep_title"
+        android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+        android:textColor="@color/on_surface" android:textSize="13sp"
+        android:maxLines="2" android:ellipsize="end"/>
+</LinearLayout>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="sharedpref" path="rs_positions.xml" />
+        <exclude domain="sharedpref" path="rs_lib_cache.xml" />
+    </cloud-backup>
+</data-extraction-rules>

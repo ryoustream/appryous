@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="@color/background"
+    android:paddingTop="56dp">
+
+    <com.google.android.material.chip.ChipGroup android:id="@+id/chip_group_genres"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:paddingHorizontal="12dp" android:paddingBottom="8dp"
+        app:singleSelection="true" xmlns:app="http://schemas.android.com/apk/res-auto"/>
+
+    <TextView android:id="@+id/tv_genre_title"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp" android:paddingBottom="8dp"
+        android:textColor="@color/on_surface" android:textSize="16sp"
+        android:fontFamily="sans-serif-medium"/>
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progress"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:indeterminate="true" android:visibility="gone"
+        app:indicatorColor="@color/accent_purple"
+        xmlns:app="http://schemas.android.com/apk/res-auto"/>
+
+    <TextView android:id="@+id/tv_empty"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_gravity="center" android:layout_marginTop="48dp"
+        android:text="@string/common_no_data"
+        android:textColor="@color/on_surface_variant" android:visibility="gone"/>
+
+    <androidx.recyclerview.widget.RecyclerView android:id="@+id/rv_items"
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        android:paddingHorizontal="8dp" android:paddingBottom="80dp"
+        android:clipToPadding="false"/>
+</LinearLayout>

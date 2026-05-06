@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AppRyous</string>
+
+    <!-- Nav labels -->
+    <string name="nav_home">Beranda</string>
+    <string name="nav_search">Cari</string>
+    <string name="nav_archive">Arsip</string>
+    <string name="nav_category">Kategori</string>
+    <string name="nav_settings">Pengaturan</string>
+
+    <!-- Splash -->
+    <string name="splash_connecting">Menghubungkan…</string>
+    <string name="splash_resolving">Mendapatkan server…</string>
+    <string name="splash_failed">Gagal terhubung ke server</string>
+    <string name="splash_retry">Coba Lagi</string>
+    <string name="splash_setup_hint">Pastikan Termux + cloudflared sedang berjalan</string>
+
+    <!-- Home -->
+    <string name="home_continue_watching">Lanjut Nonton</string>
+    <string name="home_all_series">Serial</string>
+    <string name="home_all_movies">Film</string>
+    <string name="home_see_all">Lihat Semua</string>
+    <string name="home_empty">Library kosong.\nCoba scan ulang di Pengaturan.</string>
+    <string name="home_scanning">Sedang memindai file…</string>
+
+    <!-- Search -->
+    <string name="search_hint">Cari judul, genre…</string>
+    <string name="search_empty">Tidak ditemukan hasil untuk</string>
+    <string name="search_start">Ketik untuk mencari</string>
+
+    <!-- Archive -->
+    <string name="archive_title">Semua Judul</string>
+    <string name="archive_sort">Urut</string>
+    <string name="archive_filter">Filter</string>
+    <string name="archive_sort_title_az">Judul A–Z</string>
+    <string name="archive_sort_title_za">Judul Z–A</string>
+    <string name="archive_sort_year_new">Tahun Terbaru</string>
+    <string name="archive_sort_year_old">Tahun Terlama</string>
+    <string name="archive_sort_rating">Rating Tertinggi</string>
+    <string name="archive_sort_episodes">Episode Terbanyak</string>
+    <string name="archive_sort_added">Baru Ditambahkan</string>
+    <string name="archive_filter_type">Tipe</string>
+    <string name="archive_filter_genre">Genre</string>
+    <string name="archive_filter_status">Status</string>
+    <string name="archive_filter_reset">Reset Filter</string>
+    <string name="archive_empty">Tidak ada judul yang cocok.</string>
+    <string name="archive_results">%d judul</string>
+
+    <!-- Category -->
+    <string name="category_title">Kategori</string>
+
+    <!-- Detail -->
+    <string name="detail_episodes">Episode</string>
+    <string name="detail_search_ep">Cari episode…</string>
+    <string name="detail_play">Putar</string>
+    <string name="detail_continue">Lanjutkan Ep %d</string>
+    <string name="detail_score">Skor</string>
+    <string name="detail_status">Status</string>
+    <string name="detail_studio">Studio</string>
+    <string name="detail_type">Tipe</string>
+    <string name="detail_year">Tahun</string>
+    <string name="detail_source">Sumber</string>
+    <string name="detail_aired">Tayang</string>
+    <string name="detail_genres">Genre</string>
+    <string name="detail_themes">Tema</string>
+    <string name="detail_demographics">Demografi</string>
+    <string name="detail_episode_count">%d episode</string>
+    <string name="detail_no_episodes">Episode belum tersedia</string>
+    <string name="detail_read_more">Selengkapnya</string>
+    <string name="detail_read_less">Lebih sedikit</string>
+
+    <!-- Player -->
+    <string name="player_next_ep">Episode Berikutnya</string>
+    <string name="player_auto_next">Lanjut otomatis dalam %d detik</string>
+    <string name="player_cancel">Batal</string>
+    <string name="player_episodes">Daftar Episode</string>
+    <string name="player_search_ep">Cari episode…</string>
+    <string name="player_subtitles">Subtitle</string>
+    <string name="player_audio">Audio</string>
+    <string name="player_chapters">Chapter</string>
+    <string name="player_speed">Kecepatan</string>
+    <string name="player_no_sub">Tidak Ada</string>
+    <string name="player_error">Gagal memuat video</string>
+    <string name="player_buffering">Memuat…</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Pengaturan</string>
+    <string name="settings_playback">Pemutaran</string>
+    <string name="settings_autoplay">Putar Otomatis</string>
+    <string name="settings_autoplay_desc">Mulai putar saat episode dibuka</string>
+    <string name="settings_autonext">Lanjut Otomatis</string>
+    <string name="settings_autonext_desc">Lanjut ke episode berikutnya secara otomatis</string>
+    <string name="settings_remember_pos">Ingat Posisi</string>
+    <string name="settings_remember_pos_desc">Simpan posisi terakhir menonton</string>
+    <string name="settings_subtitle">Subtitle</string>
+    <string name="settings_subtitle_enabled">Aktifkan Subtitle</string>
+    <string name="settings_desc_lang">Bahasa Deskripsi</string>
+    <string name="settings_desc_lang_id">Indonesia</string>
+    <string name="settings_desc_lang_en">English</string>
+    <string name="settings_desc_lang_ja">日本語</string>
+    <string name="settings_appearance">Tampilan</string>
+    <string name="settings_accent_color">Warna Aksen</string>
+    <string name="settings_animations">Animasi</string>
+    <string name="settings_animations_desc">Aktifkan animasi transisi</string>
+    <string name="settings_card_layout">Tata Letak Kartu</string>
+    <string name="settings_card_poster">Poster</string>
+    <string name="settings_card_wide">Lebar</string>
+    <string name="settings_server">Server</string>
+    <string name="settings_scan">Scan Library</string>
+    <string name="settings_scan_desc">Pindai ulang file di SD Card</string>
+    <string name="settings_scan_force">Scan + Reset Meta</string>
+    <string name="settings_scan_force_desc">Hapus cache metadata, ambil ulang dari MAL/TMDB</string>
+    <string name="settings_clear_cache">Hapus Cache</string>
+    <string name="settings_clear_cache_desc">Hapus cache library dan metadata</string>
+    <string name="settings_scan_running">Sedang memindai…</string>
+    <string name="settings_scan_done">Scan selesai</string>
+    <string name="settings_about_section">Tentang</string>
+
+    <!-- About -->
+    <string name="about_title">Tentang</string>
+    <string name="about_version">Versi %s (%s)</string>
+    <string name="about_built_with">Dibangun dengan</string>
+    <string name="about_data_from">Data dari</string>
+
+    <!-- Common -->
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">Batal</string>
+    <string name="common_retry">Coba Lagi</string>
+    <string name="common_close">Tutup</string>
+    <string name="common_loading">Memuat…</string>
+    <string name="common_error">Terjadi kesalahan</string>
+    <string name="common_no_data">Tidak ada data</string>
+    <string name="common_ep">Ep %d</string>
+    <string name="common_ep_title">Ep %d — %s</string>
+
+    <!-- Genres -->
+    <string name="genre_action">Aksi</string>
+    <string name="genre_adventure">Petualangan</string>
+    <string name="genre_comedy">Komedi</string>
+    <string name="genre_drama">Drama</string>
+    <string name="genre_fantasy">Fantasi</string>
+    <string name="genre_horror">Horor</string>
+    <string name="genre_mystery">Misteri</string>
+    <string name="genre_romance">Romansa</string>
+    <string name="genre_sci_fi">Fiksi Ilmiah</string>
+    <string name="genre_slice_of_life">Kehidupan Sehari-hari</string>
+    <string name="genre_sports">Olahraga</string>
+    <string name="genre_supernatural">Supranatural</string>
+    <string name="genre_thriller">Thriller</string>
+    <string name="genre_music">Musik</string>
+    <string name="genre_isekai">Isekai</string>
+
+    <!-- Anime types -->
+    <string name="type_tv">TV</string>
+    <string name="type_movie">Film</string>
+    <string name="type_ova">OVA</string>
+    <string name="type_ona">ONA</string>
+    <string name="type_special">Spesial</string>
+
+    <!-- Status -->
+    <string name="status_airing">Tayang</string>
+    <string name="status_finished">Selesai</string>
+    <string name="status_upcoming">Akan Datang</string>
+
+    <!-- Accent colors -->
+    <string name="accent_purple">Ungu</string>
+    <string name="accent_blue">Biru</string>
+    <string name="accent_green">Hijau</string>
+    <string name="accent_red">Merah</string>
+    <string name="accent_orange">Oranye</string>
+    <string name="accent_pink">Merah Muda</string>
+</resources>

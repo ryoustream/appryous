@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:paddingTop="56dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="88dp">
+
+        <!-- Playback section -->
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/settings_playback" android:textColor="@color/accent_purple"
+            android:textSize="12sp" android:fontFamily="sans-serif-medium"
+            android:paddingHorizontal="16dp" android:paddingTop="16dp" android:paddingBottom="4dp"/>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:paddingHorizontal="16dp" android:minHeight="56dp"
+            android:gravity="center_vertical">
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/settings_autoplay" android:textColor="@color/on_surface" android:textSize="15sp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/settings_autoplay_desc" android:textColor="@color/on_surface_variant" android:textSize="12sp"/>
+            </LinearLayout>
+            <com.google.android.material.materialswitch.MaterialSwitch android:id="@+id/switch_autoplay"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:paddingHorizontal="16dp" android:minHeight="56dp"
+            android:gravity="center_vertical">
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/settings_autonext" android:textColor="@color/on_surface" android:textSize="15sp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/settings_autonext_desc" android:textColor="@color/on_surface_variant" android:textSize="12sp"/>
+            </LinearLayout>
+            <com.google.android.material.materialswitch.MaterialSwitch android:id="@+id/switch_auto_next"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:paddingHorizontal="16dp" android:minHeight="56dp"
+            android:gravity="center_vertical">
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/settings_remember_pos" android:textColor="@color/on_surface" android:textSize="15sp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/settings_remember_pos_desc" android:textColor="@color/on_surface_variant" android:textSize="12sp"/>
+            </LinearLayout>
+            <com.google.android.material.materialswitch.MaterialSwitch android:id="@+id/switch_remember_pos"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <!-- Subtitle -->
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/settings_subtitle" android:textColor="@color/accent_purple"
+            android:textSize="12sp" android:fontFamily="sans-serif-medium"
+            android:paddingHorizontal="16dp" android:paddingTop="16dp" android:paddingBottom="4dp"/>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:paddingHorizontal="16dp" android:minHeight="56dp"
+            android:gravity="center_vertical">
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:text="@string/settings_subtitle_enabled" android:textColor="@color/on_surface" android:textSize="15sp"/>
+            <com.google.android.material.materialswitch.MaterialSwitch android:id="@+id/switch_subtitle"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="56dp"
+            android:orientation="horizontal" android:paddingHorizontal="16dp" android:gravity="center_vertical">
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:text="@string/settings_desc_lang" android:textColor="@color/on_surface" android:textSize="15sp"/>
+            <RadioGroup android:id="@+id/rg_desc_lang"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioButton android:id="@+id/rb_lang_id" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="ID" android:textColor="@color/on_surface"/>
+                <RadioButton android:id="@+id/rb_lang_en" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="EN" android:textColor="@color/on_surface"/>
+                <RadioButton android:id="@+id/rb_lang_ja" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="JA" android:textColor="@color/on_surface"/>
+            </RadioGroup>
+        </LinearLayout>
+
+        <!-- Appearance -->
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/settings_appearance" android:textColor="@color/accent_purple"
+            android:textSize="12sp" android:fontFamily="sans-serif-medium"
+            android:paddingHorizontal="16dp" android:paddingTop="16dp" android:paddingBottom="4dp"/>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="56dp"
+            android:orientation="horizontal" android:paddingHorizontal="16dp" android:gravity="center_vertical">
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:text="@string/settings_accent_color" android:textColor="@color/on_surface" android:textSize="15sp"/>
+            <View android:id="@+id/v_accent_preview"
+                android:layout_width="24dp" android:layout_height="24dp"
+                android:layout_marginEnd="8dp"/>
+            <com.google.android.material.button.MaterialButton android:id="@+id/btn_accent_color"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="@string/common_ok"/>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:paddingHorizontal="16dp" android:minHeight="56dp"
+            android:gravity="center_vertical">
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/settings_animations" android:textColor="@color/on_surface" android:textSize="15sp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/settings_animations_desc" android:textColor="@color/on_surface_variant" android:textSize="12sp"/>
+            </LinearLayout>
+            <com.google.android.material.materialswitch.MaterialSwitch android:id="@+id/switch_animations"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="56dp"
+            android:orientation="horizontal" android:paddingHorizontal="16dp" android:gravity="center_vertical">
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:text="@string/settings_card_layout" android:textColor="@color/on_surface" android:textSize="15sp"/>
+            <RadioGroup android:id="@+id/rg_card_layout"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioButton android:id="@+id/rb_layout_poster" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="@string/settings_card_poster"
+                    android:textColor="@color/on_surface"/>
+                <RadioButton android:id="@+id/rb_layout_wide" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="@string/settings_card_wide"
+                    android:textColor="@color/on_surface"/>
+            </RadioGroup>
+        </LinearLayout>
+
+        <!-- Server -->
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/settings_server" android:textColor="@color/accent_purple"
+            android:textSize="12sp" android:fontFamily="sans-serif-medium"
+            android:paddingHorizontal="16dp" android:paddingTop="16dp" android:paddingBottom="4dp"/>
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progress_scan"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:indeterminate="true" android:visibility="gone"
+            app:indicatorColor="@color/accent_purple"/>
+
+        <TextView android:id="@+id/tv_scan_progress"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp" android:paddingVertical="4dp"
+            android:textColor="@color/on_surface_variant" android:textSize="12sp"
+            android:visibility="gone"/>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="horizontal" android:paddingHorizontal="16dp" android:paddingVertical="8dp">
+            <com.google.android.material.button.MaterialButton android:id="@+id/btn_scan"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:layout_marginEnd="8dp"
+                android:text="@string/settings_scan"/>
+            <com.google.android.material.button.MaterialButton android:id="@+id/btn_scan_force"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/settings_scan_force"/>
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton android:id="@+id/btn_clear_cache"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:text="@string/settings_clear_cache"/>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

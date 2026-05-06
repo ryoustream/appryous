@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Background hierarchy -->
+    <color name="background">#0D0D0F</color>
+    <color name="surface">#18181C</color>
+    <color name="surface_variant">#1E1E24</color>
+    <color name="surface_container">#252530</color>
+
+    <!-- Text -->
+    <color name="on_surface">#F0F0F5</color>
+    <color name="on_surface_variant">#9090A0</color>
+    <color name="on_surface_disabled">#505060</color>
+
+    <!-- Accent — default purple (dapat diubah runtime via Settings) -->
+    <color name="accent_purple">#7C3AED</color>
+    <color name="accent_purple_dark">#5B21B6</color>
+    <color name="accent_blue">#2563EB</color>
+    <color name="accent_green">#059669</color>
+    <color name="accent_red">#DC2626</color>
+    <color name="accent_orange">#D97706</color>
+    <color name="accent_pink">#DB2777</color>
+
+    <!-- Semantic -->
+    <color name="error">#CF6679</color>
+    <color name="success">#4CAF50</color>
+    <color name="warning">#FF9800</color>
+
+    <!-- Static -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+
+    <!-- Overlay gradients (pakai di drawable XML) -->
+    <color name="scrim_dark">#CC000000</color>
+    <color name="scrim_medium">#80000000</color>
+    <color name="scrim_light">#40000000</color>
+
+    <!-- Rating badge -->
+    <color name="rating_gold">#F59E0B</color>
+
+    <!-- Progress bar track -->
+    <color name="progress_track">#30FFFFFF</color>
+
+    <!-- Chip -->
+    <color name="chip_text_color">#E0E0F0</color>
+
+    <!-- Bottom nav -->
+    <color name="bottom_nav_selected">#7C3AED</color>
+    <color name="bottom_nav_unselected">#60607A</color>
+
+    <!-- Player overlay -->
+    <color name="player_overlay_bg">#B3000000</color>
+    <color name="player_drawer_bg">#E6121214</color>
+</resources>

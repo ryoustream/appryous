@@ -175,5 +175,19 @@
             android:layout_marginHorizontal="16dp"
             android:text="@string/settings_clear_cache"/>
 
+
+        <!-- About -->
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/settings_about_section" android:textColor="@color/accent_purple"
+            android:textSize="12sp" android:fontFamily="sans-serif-medium"
+            android:paddingHorizontal="16dp" android:paddingTop="16dp" android:paddingBottom="4dp"/>
+
+        <com.google.android.material.button.MaterialButton android:id="@+id/btn_about"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:text="@string/about_title"
+            android:gravity="start"/>
+
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

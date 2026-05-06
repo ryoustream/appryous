@@ -22,6 +22,7 @@ media3Session        = "1.4.0"
 swiperefresh         = "1.1.0"
 preference           = "1.2.1"
 splashscreen         = "1.0.1"
+lifecycle-service    = "2.8.4"
 junit                = "4.13.2"
 junitExt             = "1.2.1"
 espresso             = "3.6.1"
@@ -67,6 +68,9 @@ glide-ksp            = { group = "com.github.bumptech.glide", name = "ksp",     
 # Media3 — HANYA MediaSession untuk notifikasi & lock screen controls
 # Video/audio decode dilakukan oleh mpv native (libmpv.so)
 media3-session       = { group = "androidx.media3",         name = "media3-session",             version.ref = "media3Session" }
+
+# Lifecycle service (MediaPlaybackService)
+lifecycle-service    = { group = "androidx.lifecycle",     name = "lifecycle-service",           version.ref = "lifecycle-service" }
 
 # Preference
 preference-ktx       = { group = "androidx.preference",     name = "preference-ktx",             version.ref = "preference" }

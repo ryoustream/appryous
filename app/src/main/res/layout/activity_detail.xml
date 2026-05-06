@@ -69,60 +69,71 @@
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
             android:orientation="vertical" android:paddingBottom="32dp">
 
-            <!-- Info grid -->
-            <androidx.gridlayout.widget.GridLayout android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="16dp" app:columnCount="2" app:rowCount="4">
+            <!-- Info grid (2-col via nested LinearLayouts, no gridlayout dep) -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp">
 
-                <LinearLayout android:layout_width="0dp" android:orientation="vertical"
-                    android:layout_marginEnd="8dp" app:layout_columnWeight="1">
-                    <TextView android:text="@string/detail_type"
-                        android:textColor="@color/on_surface_variant" android:textSize="11sp"
-                        android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                    <TextView android:id="@+id/tv_type" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:textColor="@color/on_surface" android:textSize="14sp"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:orientation="vertical" android:layout_marginEnd="8dp">
+                        <TextView android:text="@string/detail_type"
+                            android:textColor="@color/on_surface_variant" android:textSize="11sp"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:id="@+id/tv_type" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textColor="@color/on_surface" android:textSize="14sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:orientation="vertical">
+                        <TextView android:text="@string/detail_year"
+                            android:textColor="@color/on_surface_variant" android:textSize="11sp"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:id="@+id/tv_year" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textColor="@color/on_surface" android:textSize="14sp"/>
+                    </LinearLayout>
                 </LinearLayout>
-                <LinearLayout android:layout_width="0dp" android:orientation="vertical"
-                    app:layout_columnWeight="1">
-                    <TextView android:text="@string/detail_year"
-                        android:textColor="@color/on_surface_variant" android:textSize="11sp"
-                        android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                    <TextView android:id="@+id/tv_year" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:textColor="@color/on_surface" android:textSize="14sp"/>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:orientation="vertical" android:layout_marginEnd="8dp">
+                        <TextView android:text="@string/detail_score"
+                            android:textColor="@color/on_surface_variant" android:textSize="11sp"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:id="@+id/tv_score" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textColor="@color/rating_gold" android:textSize="14sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:orientation="vertical">
+                        <TextView android:text="@string/detail_status"
+                            android:textColor="@color/on_surface_variant" android:textSize="11sp"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:id="@+id/tv_status" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textColor="@color/on_surface" android:textSize="14sp"/>
+                    </LinearLayout>
                 </LinearLayout>
-                <LinearLayout android:layout_width="0dp" android:orientation="vertical"
-                    android:layout_marginTop="8dp" android:layout_marginEnd="8dp" app:layout_columnWeight="1">
-                    <TextView android:text="@string/detail_score"
-                        android:textColor="@color/on_surface_variant" android:textSize="11sp"
-                        android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                    <TextView android:id="@+id/tv_score" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:textColor="@color/rating_gold" android:textSize="14sp"/>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:orientation="vertical" android:layout_marginEnd="8dp">
+                        <TextView android:text="@string/detail_studio"
+                            android:textColor="@color/on_surface_variant" android:textSize="11sp"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:id="@+id/tv_studio" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textColor="@color/on_surface" android:textSize="14sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:orientation="vertical">
+                        <TextView android:text="@string/detail_source"
+                            android:textColor="@color/on_surface_variant" android:textSize="11sp"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        <TextView android:id="@+id/tv_source" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textColor="@color/on_surface" android:textSize="14sp"/>
+                    </LinearLayout>
                 </LinearLayout>
-                <LinearLayout android:layout_width="0dp" android:orientation="vertical"
-                    android:layout_marginTop="8dp" app:layout_columnWeight="1">
-                    <TextView android:text="@string/detail_status"
-                        android:textColor="@color/on_surface_variant" android:textSize="11sp"
-                        android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                    <TextView android:id="@+id/tv_status" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:textColor="@color/on_surface" android:textSize="14sp"/>
-                </LinearLayout>
-                <LinearLayout android:layout_width="0dp" android:orientation="vertical"
-                    android:layout_marginTop="8dp" android:layout_marginEnd="8dp" app:layout_columnWeight="1">
-                    <TextView android:text="@string/detail_studio"
-                        android:textColor="@color/on_surface_variant" android:textSize="11sp"
-                        android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                    <TextView android:id="@+id/tv_studio" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:textColor="@color/on_surface" android:textSize="14sp"/>
-                </LinearLayout>
-                <LinearLayout android:layout_width="0dp" android:orientation="vertical"
-                    android:layout_marginTop="8dp" app:layout_columnWeight="1">
-                    <TextView android:text="@string/detail_source"
-                        android:textColor="@color/on_surface_variant" android:textSize="11sp"
-                        android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                    <TextView android:id="@+id/tv_source" android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:textColor="@color/on_surface" android:textSize="14sp"/>
-                </LinearLayout>
-            </androidx.gridlayout.widget.GridLayout>
+            </LinearLayout>
 
             <!-- Genres -->
             <com.google.android.material.chip.ChipGroup android:id="@+id/chip_group_genres"

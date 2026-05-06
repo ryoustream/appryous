@@ -35,4 +35,11 @@
         android:label="@string/nav_settings"
         tools:layout="@layout/fragment_settings" />
 
+
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.ryou.appryous.ui.about.AboutFragment"
+        android:label="@string/about_title"
+        tools:layout="@layout/fragment_about" />
+
 </navigation>

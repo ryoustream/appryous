@@ -6,11 +6,13 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
+import androidx.lifecycle.viewModelScope
 import com.ryou.appryous.R
 import com.ryou.appryous.container
 import com.ryou.appryous.data.local.SettingsStore
 import com.ryou.appryous.data.repository.BackendRepository
 import com.ryou.appryous.databinding.FragmentSettingsBinding
+import androidx.navigation.fragment.findNavController
 import com.ryou.appryous.util.BaseViewModel
 import com.ryou.appryous.util.ScanPoller
 import com.ryou.appryous.util.showIf
@@ -132,6 +134,11 @@ class SettingsFragment : Fragment() {
         // Scan
         b.btnScan.setOnClickListener      { vm.triggerScan(false) }
         b.btnScanForce.setOnClickListener { vm.triggerScan(true) }
+
+        // About
+        b.btnAbout.setOnClickListener {
+            findNavController().navigate(com.ryou.appryous.R.id.aboutFragment)
+        }
 
         // Clear cache
         b.btnClearCache.setOnClickListener {

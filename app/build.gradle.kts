@@ -94,6 +94,7 @@ dependencies {
     ksp(libs.glide.ksp)
     implementation(libs.media3.session)
     implementation(libs.preference.ktx)
+    implementation(libs.lifecycle.service)
     testImplementation(libs.junit)
     androidTestImplementation(libs.junit.ext)
     androidTestImplementation(libs.espresso)

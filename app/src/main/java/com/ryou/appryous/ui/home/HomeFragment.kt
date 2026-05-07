@@ -72,7 +72,7 @@ class HomeFragment : Fragment() {
             // Page transformer — slight scale effect
             setPageTransformer { page, position ->
                 page.translationX = -position * 40f
-                page.alpha = 1f - (0.2f * Math.abs(position))
+                page.alpha = 1f - (0.2f * kotlin.math.abs(position))
             }
         }
         TabLayoutMediator(binding.heroIndicator, binding.vpHero) { _, _ -> }.attach()

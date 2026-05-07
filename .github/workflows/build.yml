@@ -88,11 +88,11 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace --no-build-cache
+        run: ./gradlew assembleDebug --stacktrace
 
       - name: Build Release APK
         if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
-        run: ./gradlew assembleRelease --stacktrace --no-build-cache
+        run: ./gradlew assembleRelease --stacktrace
 
       - name: Sign Release APK
         if: >-

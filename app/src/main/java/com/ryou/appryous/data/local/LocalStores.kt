@@ -13,7 +13,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 // BASE PREFS HELPER
 // ──────────────────────────────────────────────────────────────────────────────
 
-internal abstract class BaseStore(context: Context, name: String) {
+abstract class BaseStore(context: Context, name: String) {
     protected val prefs: SharedPreferences =
         context.getSharedPreferences(name, Context.MODE_PRIVATE)
 
@@ -29,7 +29,7 @@ internal abstract class BaseStore(context: Context, name: String) {
  * Penyimpanan AppSettings lokal.
  * Mirror dari DEFAULT_SETTINGS + Settings.set() di config.js epsilon.
  */
-internal class SettingsStore(context: Context) : BaseStore(context, "rs_settings") {
+class SettingsStore(context: Context) : BaseStore(context, "rs_settings") {
 
     fun get(): AppSettings = AppSettings(
         autoplay        = prefs.getBoolean(KEY_AUTOPLAY,         false),
@@ -86,7 +86,7 @@ internal class SettingsStore(context: Context) : BaseStore(context, "rs_settings
  * Riwayat tontonan — max 100 item, LIFO order.
  * Mirror dari History di config.js epsilon.
  */
-internal class HistoryStore(context: Context) : BaseStore(context, "rs_watch_history") {
+class HistoryStore(context: Context) : BaseStore(context, "rs_watch_history") {
 
     private val moshi   = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
     private val listType = Types.newParameterizedType(List::class.java, HistoryItem::class.java)
@@ -132,7 +132,7 @@ internal class HistoryStore(context: Context) : BaseStore(context, "rs_watch_his
  * Key format: "{animeId}_{ep}" — sama persis dengan JS: `${animeId}_${ep}`
  * Value: { time, duration, ts }
  */
-internal class PositionStore(context: Context) : BaseStore(context, "rs_positions") {
+class PositionStore(context: Context) : BaseStore(context, "rs_positions") {
 
     private val moshi   = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
     private val mapType = Types.newParameterizedType(
@@ -188,7 +188,7 @@ internal class PositionStore(context: Context) : BaseStore(context, "rs_position
  *
  * Mirror dari LibCache di config.js epsilon.
  */
-internal class LibCache(context: Context) : BaseStore(context, "rs_lib_cache") {
+class LibCache(context: Context) : BaseStore(context, "rs_lib_cache") {
 
     private val moshi    = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
     private val listType = Types.newParameterizedType(

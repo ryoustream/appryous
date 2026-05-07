@@ -27,29 +27,29 @@ object MPVLib {
 
     // ── JNI Native Functions ──────────────────────────────────────────────────
 
-    @JvmStatic external fun create(ctx: Context, logLvl: String): Boolean
-    @JvmStatic external fun init()
-    @JvmStatic external fun destroy()
+    external fun create(ctx: Context, logLvl: String): Boolean
+    external fun init()
+    external fun destroy()
 
-    @JvmStatic external fun command(cmd: Array<String>)
+    external fun command(cmd: Array<String>)
 
-    @JvmStatic external fun setOptionString(name: String, value: String)
+    external fun setOptionString(name: String, value: String)
 
-    @JvmStatic external fun setPropertyString (name: String, value: String)
-    @JvmStatic external fun setPropertyInt    (name: String, value: Int)
-    @JvmStatic external fun setPropertyDouble (name: String, value: Double)
-    @JvmStatic external fun setPropertyBoolean(name: String, value: Boolean)
+    external fun setPropertyString (name: String, value: String)
+    external fun setPropertyInt    (name: String, value: Int)
+    external fun setPropertyDouble (name: String, value: Double)
+    external fun setPropertyBoolean(name: String, value: Boolean)
 
-    @JvmStatic external fun getPropertyString (name: String): String?
-    @JvmStatic external fun getPropertyInt    (name: String): Int
-    @JvmStatic external fun getPropertyDouble (name: String): Double
-    @JvmStatic external fun getPropertyBoolean(name: String): Boolean
+    external fun getPropertyString (name: String): String?
+    external fun getPropertyInt    (name: String): Int
+    external fun getPropertyDouble (name: String): Double
+    external fun getPropertyBoolean(name: String): Boolean
 
     /** Observe property — callback via [EventObserver.eventProperty] */
-    @JvmStatic external fun observeProperty(name: String, format: Int)
+    external fun observeProperty(name: String, format: Int)
 
-    @JvmStatic external fun attachSurface(surface: Surface)
-    @JvmStatic external fun detachSurface()
+    external fun attachSurface(surface: Surface)
+    external fun detachSurface()
 
     // ── Observer Pattern ──────────────────────────────────────────────────────
 
@@ -69,54 +69,44 @@ object MPVLib {
     private val observers    = mutableListOf<EventObserver>()
     private var logObserver: LogObserver? = null
 
-    @JvmStatic
     fun addObserver(o: EventObserver)    { synchronized(observers) { observers.add(o) } }
 
-    @JvmStatic
     fun removeObserver(o: EventObserver) { synchronized(observers) { observers.remove(o) } }
 
-    @JvmStatic
     fun setLogObserver(o: LogObserver?)  { logObserver = o }
 
     // ── JNI Callbacks (dipanggil dari native thread) ──────────────────────────
 
-    @JvmStatic
     @Suppress("unused") // dipanggil dari JNI
     fun eventProperty(property: String, value: Long) {
         synchronized(observers) { observers.forEach { it.eventProperty(property, value) } }
     }
 
-    @JvmStatic
     @Suppress("unused")
     fun eventProperty(property: String, value: Boolean) {
         synchronized(observers) { observers.forEach { it.eventProperty(property, value) } }
     }
 
-    @JvmStatic
     @Suppress("unused")
     fun eventProperty(property: String, value: Double) {
         synchronized(observers) { observers.forEach { it.eventProperty(property, value) } }
     }
 
-    @JvmStatic
     @Suppress("unused")
     fun eventProperty(property: String, value: String) {
         synchronized(observers) { observers.forEach { it.eventProperty(property, value) } }
     }
 
-    @JvmStatic
     @Suppress("unused")
     fun eventProperty(property: String) {
         synchronized(observers) { observers.forEach { it.eventProperty(property) } }
     }
 
-    @JvmStatic
     @Suppress("unused")
     fun event(eventId: Int) {
         synchronized(observers) { observers.forEach { it.event(eventId) } }
     }
 
-    @JvmStatic
     @Suppress("unused")
     fun logMessage(prefix: String, level: Int, text: String) {
         logObserver?.logMessage(prefix, level, text)

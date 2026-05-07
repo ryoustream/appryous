@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <data-extraction-rules>
     <cloud-backup>
+        <!-- Backup settings dan history -->
+        <include domain="sharedpref" path="rs_settings.xml" />
+        <include domain="sharedpref" path="rs_watch_history.xml" />
+        <!-- Posisi & lib cache TIDAK di-backup ke cloud (data sementara/besar) -->
         <exclude domain="sharedpref" path="rs_positions.xml" />
         <exclude domain="sharedpref" path="rs_lib_cache.xml" />
     </cloud-backup>
+    <device-transfer>
+        <include domain="sharedpref" path="rs_settings.xml" />
+        <include domain="sharedpref" path="rs_watch_history.xml" />
+    </device-transfer>
 </data-extraction-rules>

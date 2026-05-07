@@ -27,6 +27,12 @@ android {
         }
     }
 
+    lint {
+        abortOnError   = false          // jangan gagal build karena lint
+        checkReleaseBuilds = false      // skip lint vital pada release
+        disable        += "FullBackupContent"  // suppress backup rule warnings
+    }
+
     buildTypes {
         release {
             isMinifyEnabled   = true

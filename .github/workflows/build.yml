@@ -14,120 +14,67 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # ── 1. Checkout ───────────────────────────────────────────────────────────
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # ── 2. JDK 17 ─────────────────────────────────────────────────────────────
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      # ── 3. Download libmpv.so ─────────────────────────────────────────────────
       - name: Get mpv-android release info
         id: mpv_release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          set -e
-          echo "Fetching latest mpv-android release..."
-
-          # Coba dengan GITHUB_TOKEN dulu (rate limit 1000/jam vs 60/jam tanpa auth)
-          HEADERS='-H "Accept: application/vnd.github+json"'
-          if [ -n "${{ secrets.GITHUB_TOKEN }}" ]; then
-            HEADERS="$HEADERS -H 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}'"
-          fi
-
           RELEASE=$(curl -sf \
             -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Authorization: Bearer $GH_TOKEN" \
             "https://api.github.com/repos/mpv-android/mpv-android/releases/latest")
 
-          TAG=$(echo "$RELEASE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['tag_name'])" 2>/dev/null)
-          echo "MPV release tag: $TAG"
-
-          # Cari APK — coba beberapa pola nama yang dipakai di berbagai versi
-          APK_URL=$(echo "$RELEASE" | python3 - << 'PYEOF'
-import sys, json
-data = json.load(sys.stdin)
-assets = data.get("assets", [])
-# Priority: universal > arm64 > apapun yang .apk
-for priority in ["universal", "arm64-v8a", "arm64", ""]:
-    for a in assets:
-        name = a["name"].lower()
-        if name.endswith(".apk") and (priority == "" or priority in name):
-            print(a["browser_download_url"])
-            sys.exit(0)
-PYEOF
-          )
-
-          if [ -z "$APK_URL" ]; then
-            echo "ERROR: Tidak bisa menemukan APK di release assets"
-            echo "Assets tersedia:"
-            echo "$RELEASE" | python3 -c "import sys,json; [print(' -', a['name']) for a in json.load(sys.stdin).get('assets',[])]"
-            exit 1
-          fi
-
-          echo "APK URL: $APK_URL"
+          TAG=$(echo "$RELEASE" | python3 -c "import sys,json; print(json.load(sys.stdin)['tag_name'])")
           echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "MPV tag: $TAG"
+
+          APK_URL=$(echo "$RELEASE" | python3 scripts/find_mpv_apk.py)
           echo "apk_url=$APK_URL" >> $GITHUB_OUTPUT
+          echo "APK: $APK_URL"
 
       - name: Cache libmpv.so
         id: cache_mpv
         uses: actions/cache@v4
         with:
           path: app/src/main/jniLibs
-          key: libmpv-${{ steps.mpv_release.outputs.tag }}-v2
+          key: libmpv-${{ steps.mpv_release.outputs.tag }}-v3
 
       - name: Download and extract libmpv.so
         if: steps.cache_mpv.outputs.cache-hit != 'true'
         run: |
           set -e
-          APK_URL="${{ steps.mpv_release.outputs.apk_url }}"
-          echo "Downloading: $APK_URL"
-
           curl -fL --retry 3 --retry-delay 10 \
             --connect-timeout 30 --max-time 300 \
-            -o /tmp/mpv.apk "$APK_URL"
-
-          echo "APK size: $(du -h /tmp/mpv.apk | cut -f1)"
-
+            -o /tmp/mpv.apk "${{ steps.mpv_release.outputs.apk_url }}"
+          echo "Size: $(du -h /tmp/mpv.apk | cut -f1)"
           mkdir -p /tmp/mpv-extract
-          unzip -q /tmp/mpv.apk "lib/*" -d /tmp/mpv-extract || {
-            echo "ERROR: unzip gagal"
-            file /tmp/mpv.apk
-            exit 1
-          }
-
-          echo "Lib dirs ditemukan:"
-          ls /tmp/mpv-extract/lib/ 2>/dev/null || echo "(kosong)"
-
-          # Copy libmpv.so ke jniLibs
-          FOUND=0
+          unzip -q /tmp/mpv.apk "lib/*" -d /tmp/mpv-extract
           for ABI in arm64-v8a armeabi-v7a x86_64; do
             SRC="/tmp/mpv-extract/lib/$ABI/libmpv.so"
             DST="app/src/main/jniLibs/$ABI/libmpv.so"
             mkdir -p "app/src/main/jniLibs/$ABI"
             if [ -f "$SRC" ]; then
               cp "$SRC" "$DST"
-              SIZE=$(du -h "$DST" | cut -f1)
-              echo "✓ $ABI/libmpv.so ($SIZE)"
-              FOUND=$((FOUND+1))
+              echo "OK $ABI $(du -h $DST | cut -f1)"
             else
-              echo "⚠ $ABI tidak tersedia dalam APK"
+              echo "SKIP $ABI"
             fi
           done
-
-          # arm64-v8a WAJIB ada
           if [ ! -f "app/src/main/jniLibs/arm64-v8a/libmpv.so" ]; then
-            echo "FATAL: arm64-v8a/libmpv.so tidak ditemukan!"
-            echo "Semua .so dalam APK:"
-            find /tmp/mpv-extract -name "*.so" | head -30
+            echo "FATAL: arm64-v8a/libmpv.so tidak ditemukan"
+            find /tmp/mpv-extract -name "*.so" | head -20
             exit 1
           fi
-          echo "Total ABI ditemukan: $FOUND"
 
-      # ── 4. Gradle cache ────────────────────────────────────────────────────────
       - name: Cache Gradle
         uses: actions/cache@v4
         with:
@@ -137,43 +84,28 @@ PYEOF
           key: gradle-${{ hashFiles('**/*.gradle.kts', '**/libs.versions.toml') }}
           restore-keys: gradle-
 
-      # ── 5. Permission gradlew ──────────────────────────────────────────────────
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      # ── 6. Build Debug APK ─────────────────────────────────────────────────────
       - name: Build Debug APK
-        run: |
-          ./gradlew assembleDebug \
-            --stacktrace \
-            --no-build-cache \
-            -Pandroid.experimental.legacyTransform.forceNonIncremental=true
+        run: ./gradlew assembleDebug --stacktrace --no-build-cache
 
-      # ── 7. Build Release APK ───────────────────────────────────────────────────
       - name: Build Release APK
         if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
-        run: |
-          ./gradlew assembleRelease \
-            --stacktrace \
-            --no-build-cache
+        run: ./gradlew assembleRelease --stacktrace --no-build-cache
 
-      # ── 8. Sign Release APK ────────────────────────────────────────────────────
       - name: Sign Release APK
-        if: |
+        if: >-
           (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')) &&
           env.KEYSTORE_BASE64 != ''
         env:
-          KEYSTORE_BASE64:    ${{ secrets.KEYSTORE_BASE64 }}
-          KEYSTORE_PASSWORD:  ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS:          ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD:       ${{ secrets.KEY_PASSWORD }}
+          KEYSTORE_BASE64:   ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS:         ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD:      ${{ secrets.KEY_PASSWORD }}
         run: |
           echo "$KEYSTORE_BASE64" | base64 -d > /tmp/keystore.jks
-
-          # Cari build-tools terbaru yang tersedia
           BUILD_TOOLS=$(ls "$ANDROID_HOME/build-tools/" | sort -V | tail -1)
-          echo "Using build-tools: $BUILD_TOOLS"
-
           "$ANDROID_HOME/build-tools/$BUILD_TOOLS/apksigner" sign \
             --ks /tmp/keystore.jks \
             --ks-pass "pass:$KEYSTORE_PASSWORD" \
@@ -181,11 +113,9 @@ PYEOF
             --key-pass "pass:$KEY_PASSWORD" \
             --out app/build/outputs/apk/release/appryous-signed.apk \
             app/build/outputs/apk/release/app-release-unsigned.apk
-
-          echo "✓ APK signed"
           rm -f /tmp/keystore.jks
+          echo "APK signed"
 
-      # ── 9. Upload Artifacts ────────────────────────────────────────────────────
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         if: always()
@@ -204,7 +134,6 @@ PYEOF
           if-no-files-found: warn
           retention-days: 30
 
-      # ── 10. GitHub Release ─────────────────────────────────────────────────────
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2

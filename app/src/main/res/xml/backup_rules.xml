@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Android pre-API 31 backup rules.
+    Hanya backup settings dan history.
+-->
 <full-backup-content>
-    <!-- Backup settings dan history saja -->
-    <include domain="sharedpref" path="rs_settings.xml" />
-    <include domain="sharedpref" path="rs_watch_history.xml" />
-    <!-- Posisi & cache tidak perlu di-backup (data sementara) -->
-    <include domain="sharedpref" path="rs_positions.xml" />
-    <include domain="sharedpref" path="rs_lib_cache.xml" />
+    <include domain="sharedpref" path="rs_settings.xml"/>
+    <include domain="sharedpref" path="rs_watch_history.xml"/>
 </full-backup-content>

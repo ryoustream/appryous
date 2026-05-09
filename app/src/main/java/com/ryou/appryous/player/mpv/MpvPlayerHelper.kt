@@ -125,8 +125,17 @@ object MpvPlayerHelper {
      *  server.py skip ASS→VTT conversion, serve file mentah
      *  libmpv + libass baca file ASS langsung → render PENUH
      */
+    /**
+     * Build subtitle URL.
+     *
+     * subtitle.src dari backend SUDAH absolute URL (backend inject base_url).
+     * Hanya tambah ?raw=1 untuk .ass/.ssa agar libass baca langsung tanpa
+     * konversi ke VTT oleh backend.
+     */
     private fun buildSubUrl(src: String, baseUrl: String): String {
-        val url = if (src.startsWith("/")) "$baseUrl$src" else src
+        // src sudah absolute — tidak perlu prepend baseUrl
+        // baseUrl param dipertahankan untuk backward compat tapi tidak dipakai
+        val url = src.trim()
         val isAss = url.contains(".ass", ignoreCase = true) ||
                     url.contains(".ssa", ignoreCase = true)
         return if (isAss) {

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!--
+        Allow cleartext HTTP untuk:
+        - Backend lokal via LAN (http://192.168.x.x:8080)
+        - Backend via cloudflared tunnel (https — sudah aman)
+        - Testing di emulator (http://10.0.2.2:8080)
+
+        CATATAN: Cloudflare tunnel selalu HTTPS — tidak ada risiko.
+        HTTP hanya dipakai saat backend di LAN lokal tanpa tunnel.
+    -->
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system"/>
+            <certificates src="user"/>
+        </trust-anchors>
+    </base-config>
+</network-security-config>

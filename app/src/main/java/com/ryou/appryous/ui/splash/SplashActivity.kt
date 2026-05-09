@@ -71,7 +71,8 @@ class SplashActivity : AppCompatActivity() {
         } else {
             startActivity(intent)
             @Suppress("DEPRECATION")
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+            @Suppress("DEPRECATION")
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
         finish()
     }

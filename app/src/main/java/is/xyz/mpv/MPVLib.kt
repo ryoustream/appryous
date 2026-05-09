@@ -1,0 +1,141 @@
+package `is`.xyz.mpv
+
+import android.content.Context
+import android.view.Surface
+
+/**
+ * JNI wrapper untuk libmpv.so — package HARUS is.xyz.mpv
+ *
+ * libmpv.so dari mpv-android di-compile dengan JNI exports:
+ *   Java_is_1xyz_mpv_MPVLib_create
+ *   Java_is_1xyz_mpv_MPVLib_init
+ *   Java_is_1xyz_mpv_MPVLib_destroy
+ *   ... dst
+ *
+ * Underscore pada "xyz" → "1xyz" karena JNI mangle convention:
+ * titik (.) → underscore (_), package separator → underscore (_)
+ * underscore dalam nama → _1
+ *
+ * Jika package berbeda (misal com.ryou.appryous.player.mpv),
+ * JVM mencari Java_com_ryou_appryous_player_mpv_MPVLib_* yang tidak ada
+ * → UnsatisfiedLinkError crash saat app start.
+ *
+ * Source asli: https://github.com/mpv-android/mpv-android
+ * File: app/src/main/java/is/xyz/mpv/MPVLib.kt
+ */
+object MPVLib {
+
+    external fun create(ctx: Context, logLvl: String): Boolean
+    external fun init()
+    external fun destroy()
+
+    external fun command(cmd: Array<String>)
+
+    external fun setOptionString(name: String, value: String)
+
+    external fun setPropertyString (name: String, value: String)
+    external fun setPropertyInt    (name: String, value: Int)
+    external fun setPropertyDouble (name: String, value: Double)
+    external fun setPropertyBoolean(name: String, value: Boolean)
+
+    external fun getPropertyString (name: String): String?
+    external fun getPropertyInt    (name: String): Int
+    external fun getPropertyDouble (name: String): Double
+    external fun getPropertyBoolean(name: String): Boolean
+
+    external fun observeProperty(name: String, format: Int)
+
+    external fun attachSurface(surface: Surface)
+    external fun detachSurface()
+
+    // ── Observer ─────────────────────────────────────────────────────────────
+
+    interface EventObserver {
+        fun eventProperty(property: String)
+        fun eventProperty(property: String, value: Long)
+        fun eventProperty(property: String, value: Boolean)
+        fun eventProperty(property: String, value: Double)
+        fun eventProperty(property: String, value: String)
+        fun event(eventId: Int)
+    }
+
+    interface LogObserver {
+        fun logMessage(prefix: String, level: Int, text: String)
+    }
+
+    private val observers   = mutableListOf<EventObserver>()
+    private var logObserver: LogObserver? = null
+
+    fun addObserver(o: EventObserver)    { synchronized(observers) { observers.add(o) } }
+    fun removeObserver(o: EventObserver) { synchronized(observers) { observers.remove(o) } }
+    fun setLogObserver(o: LogObserver?)  { logObserver = o }
+
+    // ── JNI callbacks (called from native thread) ─────────────────────────────
+
+    @JvmStatic @Suppress("unused")
+    fun eventProperty(property: String, value: Long) =
+        synchronized(observers) { observers.forEach { it.eventProperty(property, value) } }
+
+    @JvmStatic @Suppress("unused")
+    fun eventProperty(property: String, value: Boolean) =
+        synchronized(observers) { observers.forEach { it.eventProperty(property, value) } }
+
+    @JvmStatic @Suppress("unused")
+    fun eventProperty(property: String, value: Double) =
+        synchronized(observers) { observers.forEach { it.eventProperty(property, value) } }
+
+    @JvmStatic @Suppress("unused")
+    fun eventProperty(property: String, value: String) =
+        synchronized(observers) { observers.forEach { it.eventProperty(property, value) } }
+
+    @JvmStatic @Suppress("unused")
+    fun eventProperty(property: String) =
+        synchronized(observers) { observers.forEach { it.eventProperty(property) } }
+
+    @JvmStatic @Suppress("unused")
+    fun event(eventId: Int) =
+        synchronized(observers) { observers.forEach { it.event(eventId) } }
+
+    @JvmStatic @Suppress("unused")
+    fun logMessage(prefix: String, level: Int, text: String) {
+        logObserver?.logMessage(prefix, level, text)
+    }
+
+    // ── Event IDs ─────────────────────────────────────────────────────────────
+
+    const val EVENT_NONE               = 0
+    const val EVENT_SHUTDOWN           = 1
+    const val EVENT_LOG_MESSAGE        = 2
+    const val EVENT_GET_PROPERTY_REPLY = 3
+    const val EVENT_SET_PROPERTY_REPLY = 4
+    const val EVENT_COMMAND_REPLY      = 5
+    const val EVENT_START_FILE         = 6
+    const val EVENT_END_FILE           = 7
+    const val EVENT_FILE_LOADED        = 8
+    const val EVENT_IDLE               = 11
+    const val EVENT_TICK               = 14
+    const val EVENT_CLIENT_MESSAGE     = 16
+    const val EVENT_VIDEO_RECONFIG     = 17
+    const val EVENT_AUDIO_RECONFIG     = 18
+    const val EVENT_SEEK               = 20
+    const val EVENT_PLAYBACK_RESTART   = 21
+    const val EVENT_PROPERTY_CHANGE    = 22
+    const val EVENT_QUEUE_OVERFLOW     = 24
+    const val EVENT_HOOK               = 25
+
+    // ── Format IDs ────────────────────────────────────────────────────────────
+
+    const val FORMAT_NONE    = 0
+    const val FORMAT_STRING  = 1
+    const val FORMAT_OSD     = 2
+    const val FORMAT_FLAG    = 3
+    const val FORMAT_INT64   = 4
+    const val FORMAT_DOUBLE  = 5
+    const val FORMAT_NODE    = 6
+
+    // ── Load native library ───────────────────────────────────────────────────
+
+    init {
+        System.loadLibrary("mpv")
+    }
+}

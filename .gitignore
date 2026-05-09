@@ -24,3 +24,10 @@ app/src/main/jniLibs/x86_64/libmpv.so
 
 # Secrets
 secrets.properties
+
+# Backend
+backend/cache/
+backend/__pycache__/
+backend/lib/__pycache__/
+backend/config.json
+*.pyc

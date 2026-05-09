@@ -1,0 +1,5 @@
+# RyouStream v1.1.0 Epsilon — Backend Dependencies
+# Semua tersedia di Termux tanpa perlu Rust/compiler
+
+requests   # HTTP requests untuk metadata (Jikan, TMDB, MDL)
+mutagen    # baca tag file video (judul lebih akurat) — opsional

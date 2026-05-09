@@ -20,7 +20,7 @@ import com.ryou.appryous.R
 import com.ryou.appryous.container
 import com.ryou.appryous.data.model.Chapter
 import com.ryou.appryous.databinding.ActivityPlayerBinding
-import com.ryou.appryous.player.mpv.MPVLib
+import com.ryou.appryous.player.mpv.MPVLib  // typealias → is.xyz.mpv.MPVLib
 import com.ryou.appryous.player.mpv.MpvPlayerHelper
 import com.ryou.appryous.player.mpv.MpvTrack
 import com.ryou.appryous.util.*
